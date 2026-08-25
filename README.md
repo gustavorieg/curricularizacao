@@ -127,4 +127,3 @@ Artigo, categoria ou autor criado/editado no painel aparece no app assim que a t
 
 - Este README documenta os três projetos. Cada pasta (`backend/`, `frontend/`, `mobile/minha-saude-feminina/`) tem só `.env.example` e `package.json`, sem README próprio.
 - Sem banco de dados externo: o backend persiste em JSON local, o app persiste o calendário localmente no dispositivo.
-- `PROMPT_ENTREGAS.md` documenta o escopo original das entregas desta etapa do projeto.
