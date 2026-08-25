@@ -1,32 +1,30 @@
 # Minha Saúde Feminina
 
-Plataforma de conteúdo e acompanhamento de saúde da mulher, composta por três projetos independentes que compartilham a mesma API:
+Três projetos que compartilham a mesma API: backend, painel administrativo web e app mobile.
 
 | Pasta | O que é | Stack |
 |---|---|---|
-| [`backend/`](backend) | API REST — artigos, categorias, autores, usuários e autenticação | Node.js + Express |
-| [`frontend/`](frontend) | Painel administrativo web para gerenciar o conteúdo | React + Vite + TypeScript |
-| [`mobile/`](mobile) | Aplicativo para quem consome o conteúdo, com calendário menstrual | Expo (React Native) |
+| [`backend/`](backend) | API REST (artigos, categorias, autores, usuários, autenticação) | Node.js + Express |
+| [`frontend/`](frontend) | Painel administrativo web | React + Vite + TypeScript |
+| [`mobile/`](mobile) | App de leitura de conteúdo, com calendário menstrual | Expo (React Native) |
 
 ```
 curricularizacao/
-├── backend/    # API REST (Express) — fonte da verdade dos dados
-├── frontend/   # Painel admin web — cria/edita artigos, categorias e usuários
-└── mobile/     # App Expo — leitura de conteúdo + calendário menstrual local
+├── backend/    API REST (Express)
+├── frontend/   Painel admin web
+└── mobile/     App Expo
     └── minha-saude-feminina/
 ```
 
-O **backend** é o único ponto de persistência: tanto o painel quanto o app consomem a mesma API. O calendário menstrual do app é a exceção — vive inteiramente no dispositivo (`AsyncStorage`), sem nenhuma chamada de rede.
+O painel web e o app consomem a mesma API. O calendário menstrual do app é a exceção: fica salvo só no dispositivo (`AsyncStorage`), sem chamada de rede.
 
-## Visão geral de cada projeto
+## backend
 
-### `backend/` — API
+Node.js + Express. Os dados ficam num arquivo JSON local (`src/data/db.json`), criado e semeado automaticamente na primeira execução. Não precisa instalar banco de dados.
 
-Node.js + Express, com os dados persistidos em um arquivo JSON local (`src/data/db.json`), semeado automaticamente na primeira execução — não é necessário instalar nem configurar banco de dados externo.
-
-- CRUD completo de **artigos**, **categorias**, **autores** e **usuários**
-- **Autenticação dupla**: sessão por `email`/`senha` (`Authorization: Bearer <token>`) para o painel, ou chave estática (`x-api-key`) para scripts/integrações — ambas aceitas nas mesmas rotas
-- Usuário administrador semeado automaticamente no primeiro boot
+- CRUD completo de artigos, categorias, autores e usuários
+- Autenticação por sessão (email/senha, `Authorization: Bearer <token>`) ou por chave estática (`x-api-key`), ambas aceitas nas mesmas rotas
+- Usuário administrador criado automaticamente no primeiro boot
 
 ```bash
 cd backend
@@ -52,22 +50,22 @@ npm run dev          # http://localhost:3333/api/v1
 | Categorias | `GET/POST /categories`, `GET/PATCH/DELETE /categories/:id` |
 | Autores | `GET/POST /authors` |
 
-Login padrão semeado automaticamente: `admin@minhasaudefeminina.com` / `admin123`.
+Login padrão: `admin@minhasaudefeminina.com` / `admin123`.
 
-### `frontend/` — Painel administrativo
+## frontend
 
-Interface web onde o conteúdo exibido no app é criado e mantido.
+Painel web onde o conteúdo do app é criado e mantido.
 
-- CRUD de artigos com **editor de texto rico** (negrito, itálico, títulos, listas, cores, upload de imagem e embed de vídeo do YouTube/Vimeo/arquivo)
+- CRUD de artigos, com editor de texto rico (negrito, itálico, títulos, listas, cores, upload de imagem e embed de vídeo)
 - CRUD de categorias e de usuários do painel (papéis admin/editor)
-- Autor do artigo por **texto livre com autocomplete** — se o nome digitado não existir, é criado automaticamente
-- Login por email/senha (padrão) ou por chave de API, ambos persistidos localmente
-- Feedback visual em todas as ações: toasts de sucesso/erro, estados de carregamento e vazios
+- Autor do artigo por texto livre com autocomplete: se o nome digitado não existir, é criado automaticamente
+- Login por email/senha (padrão) ou por chave de API, ambos salvos localmente
+- Toasts de sucesso/erro, estados de carregamento e de lista vazia em todas as telas
 
 ```bash
 cd frontend
 npm install
-cp .env.example .env   # aponte para a URL da API
+cp .env.example .env
 npm run dev             # http://localhost:5173
 ```
 
@@ -77,22 +75,22 @@ npm run dev             # http://localhost:5173
 |---|---|---|
 | `VITE_API_BASE_URL` | Base URL da API | `http://localhost:3333/api/v1` |
 
-### `mobile/` — App Expo
+## mobile
 
-App que dois públicos usam: quem lê o conteúdo de saúde, e quem acompanha o próprio ciclo menstrual.
+App usado por quem lê conteúdo de saúde e por quem acompanha o próprio ciclo menstrual.
 
-- **Leitura de conteúdo** (somente leitura): início, categorias, busca e detalhe de artigo, consumindo a mesma API do painel
-- **Meu Ciclo** — calendário menstrual 100% local, sem depender da API:
-  - Registro de período por data de fim ou por duração em dias, com máscara `DD/MM/AAAA`
+- Leitura de conteúdo (início, categorias, busca, detalhe de artigo), consumindo a mesma API do painel
+- Meu Ciclo: calendário menstrual local, sem depender da API
+  - Registro por data de fim ou por duração em dias, com máscara `DD/MM/AAAA`
   - Cálculo de dias férteis e previsão do próximo ciclo com base no histórico
-  - Calendário visual localizado em português, com detalhe ao tocar em qualquer dia
-  - Edição e exclusão de registros, com persistência via `AsyncStorage`
-- **Perfil** — tela estática com dados apenas do usuário local (nenhum cadastro/login é exigido)
+  - Calendário em português, com detalhe ao tocar em qualquer dia
+  - Edição e exclusão de registros, salvos com `AsyncStorage`
+- Perfil: tela estática com dados do usuário local, sem cadastro nem login
 
 ```bash
 cd mobile/minha-saude-feminina
 npm install
-cp .env.example .env    # ajuste a URL da API se necessário
+cp .env.example .env
 npm run web              # ou: npx expo start (Expo Go)
 ```
 
@@ -104,7 +102,7 @@ npm run web              # ou: npx expo start (Expo Go)
 
 ## Rodando tudo junto
 
-A ordem recomendada é subir o backend primeiro — tanto o painel quanto as telas de conteúdo do app dependem dele.
+Suba o backend primeiro. O painel e as telas de conteúdo do app dependem dele.
 
 ```bash
 # terminal 1
@@ -123,10 +121,10 @@ cd mobile/minha-saude-feminina && npm install && cp .env.example .env && npm run
 | Painel web | `http://localhost:5173` |
 | App (Expo web) | `http://localhost:8081` |
 
-Qualquer artigo, categoria ou autor criado/editado no painel fica disponível para o app assim que a tela correspondente é recarregada — não há necessidade de reiniciar nada.
+Artigo, categoria ou autor criado/editado no painel aparece no app assim que a tela correspondente é recarregada.
 
 ## Convenções do repositório
 
-- Este README é a documentação central dos três projetos; cada pasta (`backend/`, `frontend/`, `mobile/minha-saude-feminina/`) tem apenas seu `.env.example` e `package.json`, sem README próprio.
-- Não há banco de dados externo: o backend persiste em JSON local, e o app persiste o calendário localmente no dispositivo.
+- Este README documenta os três projetos. Cada pasta (`backend/`, `frontend/`, `mobile/minha-saude-feminina/`) tem só `.env.example` e `package.json`, sem README próprio.
+- Sem banco de dados externo: o backend persiste em JSON local, o app persiste o calendário localmente no dispositivo.
 - `PROMPT_ENTREGAS.md` documenta o escopo original das entregas desta etapa do projeto.
