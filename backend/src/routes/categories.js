@@ -14,7 +14,7 @@ function slugify(value) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)+/g, "");
 }
-
+// Validate the payload
 function validateCreatePayload(body) {
   if (!body || typeof body.name !== "string" || !body.name.trim()) {
     throw new ApiError(422, "VALIDATION_ERROR", "O campo 'name' e obrigatorio.");
@@ -30,7 +30,7 @@ function validateCreatePayload(body) {
   }
 }
 
-// GET /categories
+// GET /categories | simple GET
 router.get("/", (req, res) => {
   const { db } = store;
   const sorted = [...db.categories].sort((a, b) => a.displayOrder - b.displayOrder);
@@ -82,7 +82,7 @@ router.post("/", adminAuth, (req, res, next) => {
   }
 });
 
-// PATCH /categories/:id (admin)
+// PATCH /categories/:id only admins
 router.patch("/:id", adminAuth, (req, res, next) => {
   try {
     const { db } = store;
@@ -135,7 +135,7 @@ router.patch("/:id", adminAuth, (req, res, next) => {
   }
 });
 
-// DELETE /categories/:id (admin)
+// DELETE /categories/:id only admins
 router.delete("/:id", adminAuth, (req, res, next) => {
   const { db } = store;
   const index = db.categories.findIndex((c) => c.id === req.params.id);
