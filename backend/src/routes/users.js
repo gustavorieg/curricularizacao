@@ -12,7 +12,7 @@ function sanitizeUser(user) {
   const { passwordHash, ...rest } = user;
   return rest;
 }
-
+// Validation 
 function validateCreatePayload(body, db) {
   if (!body || typeof body.name !== "string" || !body.name.trim()) {
     throw new ApiError(422, "VALIDATION_ERROR", "O campo 'name' e obrigatorio.");
@@ -31,13 +31,13 @@ function validateCreatePayload(body, db) {
   }
 }
 
-// GET /users (admin)
+// GET /users | only admin
 router.get("/", adminAuth, (req, res) => {
   const { db } = store;
   res.json({ data: db.users.map(sanitizeUser) });
 });
 
-// GET /users/:id (admin)
+// GET /users/:id | only admin
 router.get("/:id", adminAuth, (req, res, next) => {
   const { db } = store;
   const user = db.users.find((u) => u.id === req.params.id);
