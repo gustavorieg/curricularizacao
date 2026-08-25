@@ -7,13 +7,3 @@ export function getApiBaseUrl(): string {
 
   return apiBaseUrl;
 }
-
-export function getAdminApiKey(): string {
-  const adminApiKey = process.env.EXPO_PUBLIC_ADMIN_API_KEY?.trim();
-
-  if (!adminApiKey) {
-    throw new Error('EXPO_PUBLIC_ADMIN_API_KEY nao configurada');
-  }
-
-  return adminApiKey;
-}

@@ -5,11 +5,13 @@ import { categoryService } from "../services/category-service";
 import { extractErrorMessage } from "../services/api-client";
 import type { Category, CategoryPayload } from "../types";
 import { AlertIcon } from "../components/icons";
+import { useToast } from "../context/ToastContext";
 
 export function CategoryFormPage() {
   const { id } = useParams();
   const isEditing = Boolean(id);
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [category, setCategory] = useState<Category | undefined>(undefined);
   const [loading, setLoading] = useState(isEditing);
@@ -46,8 +48,10 @@ export function CategoryFormPage() {
     try {
       if (isEditing && id) {
         await categoryService.update(id, payload);
+        showToast("Categoria atualizada com sucesso.");
       } else {
         await categoryService.create(payload);
+        showToast("Categoria criada com sucesso.");
       }
       navigate("/categories");
     } catch (err) {

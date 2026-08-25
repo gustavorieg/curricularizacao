@@ -1,4 +1,5 @@
 import type { ArticleSource } from "../types";
+import { TrashIcon } from "./icons";
 
 interface SourcesEditorProps {
   sources: ArticleSource[];
@@ -25,7 +26,7 @@ export function SourcesEditor({ sources, onChange }: SourcesEditorProps) {
         <div className="source-row" key={index}>
           <input
             type="text"
-            placeholder="Titulo da fonte"
+            placeholder="Título da fonte"
             value={source.title}
             onChange={(e) => updateSource(index, { title: e.target.value })}
           />
@@ -37,12 +38,12 @@ export function SourcesEditor({ sources, onChange }: SourcesEditorProps) {
           />
           <input
             type="text"
-            placeholder="Descricao (opcional)"
+            placeholder="Descrição (opcional)"
             value={source.description ?? ""}
             onChange={(e) => updateSource(index, { description: e.target.value })}
           />
-          <button type="button" className="btn-icon danger" onClick={() => removeSource(index)}>
-            Remover
+          <button type="button" className="btn-link danger" onClick={() => removeSource(index)}>
+            <TrashIcon />
           </button>
         </div>
       ))}

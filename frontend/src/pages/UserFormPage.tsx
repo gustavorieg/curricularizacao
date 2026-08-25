@@ -5,11 +5,13 @@ import { userService } from "../services/user-service";
 import { extractErrorMessage } from "../services/api-client";
 import type { User, UserPayload } from "../types";
 import { AlertIcon } from "../components/icons";
+import { useToast } from "../context/ToastContext";
 
 export function UserFormPage() {
   const { id } = useParams();
   const isEditing = Boolean(id);
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [user, setUser] = useState<User | undefined>(undefined);
   const [loading, setLoading] = useState(isEditing);
@@ -46,8 +48,10 @@ export function UserFormPage() {
     try {
       if (isEditing && id) {
         await userService.update(id, payload);
+        showToast("Usuário atualizado com sucesso.");
       } else {
         await userService.create(payload);
+        showToast("Usuário criado com sucesso.");
       }
       navigate("/users");
     } catch (err) {

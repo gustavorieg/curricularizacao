@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import '@/lib/calendar-locale';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -18,7 +19,6 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="categoria/[id]" options={{ title: 'Categoria' }} />
         <Stack.Screen name="artigo/[id]" options={{ title: 'Artigo' }} />
-        <Stack.Screen name="gerenciar-categorias" options={{ title: 'Gerenciar categorias' }} />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

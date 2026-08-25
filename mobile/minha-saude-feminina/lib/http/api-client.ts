@@ -1,4 +1,4 @@
-import { getAdminApiKey, getApiBaseUrl } from '@/config/env';
+import { getApiBaseUrl } from '@/config/env';
 import { clearAccessToken, getAccessToken } from '@/lib/http/auth-token';
 import type { ApiErrorBody, ApiRequestOptions } from '@/types/api';
 
@@ -40,7 +40,7 @@ export async function apiRequest<T>(
   path: string,
   options: ApiRequestOptions = {}
 ): Promise<T> {
-  const { admin, auth, body, ...requestOptions } = options;
+  const { auth, body, ...requestOptions } = options;
   const token = auth === false ? null : getAccessToken();
   const headers = new Headers(options.headers);
 
@@ -52,10 +52,6 @@ export async function apiRequest<T>(
 
   if (token) {
     headers.set('Authorization', `Bearer ${token}`);
-  }
-
-  if (admin) {
-    headers.set('x-api-key', getAdminApiKey());
   }
 
   const response = await fetch(buildUrl(path), {

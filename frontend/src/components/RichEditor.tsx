@@ -73,7 +73,7 @@ export function RichEditor({ value, onChange }: RichEditorProps) {
           ["clean"],
         ],
         handlers: {
-          image: function imageHandler(this: { quill: any }) {
+          image: function imageHandler(this: { quill: Quill }) {
             const input = document.createElement("input");
             input.type = "file";
             input.accept = "image/*";
@@ -87,7 +87,7 @@ export function RichEditor({ value, onChange }: RichEditorProps) {
             };
             input.click();
           },
-          "video-embed": function videoEmbedHandler(this: { quill: any }) {
+          "video-embed": function videoEmbedHandler(this: { quill: Quill }) {
             const url = window.prompt(
               "Cole a URL do video (YouTube, Vimeo ou link direto .mp4):"
             );

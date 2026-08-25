@@ -4,8 +4,10 @@ import { categoryService } from "../services/category-service";
 import { extractErrorMessage } from "../services/api-client";
 import type { Category } from "../types";
 import { AlertIcon, CategoryIcon, EditIcon, PlusIcon, TrashIcon } from "../components/icons";
+import { useToast } from "../context/ToastContext";
 
 export function CategoriesPage() {
+  const { showToast } = useToast();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,8 +38,9 @@ export function CategoriesPage() {
     try {
       await categoryService.remove(category.id);
       setCategories((prev) => prev.filter((c) => c.id !== category.id));
+      showToast("Categoria removida com sucesso.");
     } catch (err) {
-      window.alert(extractErrorMessage(err));
+      showToast(extractErrorMessage(err), "error");
     } finally {
       setDeletingId(null);
     }

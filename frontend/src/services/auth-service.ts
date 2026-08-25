@@ -13,4 +13,8 @@ export const authService = {
   async logout() {
     await apiClient.post("/auth/logout").catch(() => {});
   },
+
+  async verifyApiKey(apiKey: string) {
+    await apiClient.get("/users", { headers: { "x-api-key": apiKey } });
+  },
 };

@@ -2,10 +2,6 @@ import { ApiError } from '@/lib/http/api-client';
 
 export function getUserFacingErrorMessage(error: unknown): string {
   if (!(error instanceof ApiError)) {
-    if (error instanceof Error && error.message.includes('EXPO_PUBLIC_ADMIN_API_KEY')) {
-      return 'Chave administrativa nao configurada. Defina EXPO_PUBLIC_ADMIN_API_KEY apenas em ambiente interno.';
-    }
-
     if (error instanceof Error && error.message.includes('EXPO_PUBLIC_API_BASE_URL')) {
       return 'URL da API nao configurada. Defina EXPO_PUBLIC_API_BASE_URL.';
     }
@@ -22,8 +18,6 @@ export function getUserFacingErrorMessage(error: unknown): string {
       return 'Artigo nao encontrado.';
     case 'VALIDATION_ERROR':
       return 'Os dados enviados sao invalidos.';
-    case 'ADMIN_API_KEY_NOT_CONFIGURED':
-      return 'A chave administrativa nao esta configurada na API.';
     case 'UNAUTHORIZED':
       return 'Voce nao esta autenticado para executar esta acao.';
   }

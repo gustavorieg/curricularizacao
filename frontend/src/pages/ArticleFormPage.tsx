@@ -7,11 +7,13 @@ import { authorService } from "../services/author-service";
 import { extractErrorMessage } from "../services/api-client";
 import type { Article, ArticlePayload, Author, Category } from "../types";
 import { AlertIcon } from "../components/icons";
+import { useToast } from "../context/ToastContext";
 
 export function ArticleFormPage() {
   const { id } = useParams();
   const isEditing = Boolean(id);
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [article, setArticle] = useState<Article | undefined>(undefined);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -55,8 +57,10 @@ export function ArticleFormPage() {
     try {
       if (isEditing && id) {
         await articleService.update(id, payload);
+        showToast("Artigo atualizado com sucesso.");
       } else {
         await articleService.create(payload);
+        showToast("Artigo criado com sucesso.");
       }
       navigate("/articles");
     } catch (err) {

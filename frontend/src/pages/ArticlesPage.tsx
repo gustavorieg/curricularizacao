@@ -5,8 +5,10 @@ import { categoryService } from "../services/category-service";
 import { extractErrorMessage } from "../services/api-client";
 import type { Article, Category } from "../types";
 import { AlertIcon, ArticleIcon, EditIcon, PlusIcon, SearchIcon, TrashIcon } from "../components/icons";
+import { useToast } from "../context/ToastContext";
 
 export function ArticlesPage() {
+  const { showToast } = useToast();
   const [articles, setArticles] = useState<Article[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [search, setSearch] = useState("");
@@ -47,8 +49,9 @@ export function ArticlesPage() {
     try {
       await articleService.remove(article.id);
       setArticles((prev) => prev.filter((a) => a.id !== article.id));
+      showToast("Artigo removido com sucesso.");
     } catch (err) {
-      window.alert(extractErrorMessage(err));
+      showToast(extractErrorMessage(err), "error");
     } finally {
       setDeletingId(null);
     }

@@ -38,6 +38,7 @@ export function isValidDateString(value: string): boolean {
 export type CycleFormValidationError =
   | 'INVALID_START_DATE'
   | 'INVALID_END_DATE'
+  | 'START_IN_FUTURE'
   | 'END_BEFORE_START'
   | 'OVERLAPS_EXISTING_CYCLE';
 
@@ -52,6 +53,7 @@ export function validateCycleInput(
 ): CycleFormValidationError | null {
   if (!isValidDateString(input.startDate)) return 'INVALID_START_DATE';
   if (!isValidDateString(input.endDate)) return 'INVALID_END_DATE';
+  if (input.startDate > formatDateOnly(new Date())) return 'START_IN_FUTURE';
   if (diffInDays(input.startDate, input.endDate) < 0) return 'END_BEFORE_START';
 
   const overlaps = existingCycles.some((cycle) => {
@@ -69,6 +71,8 @@ export function validationErrorMessage(error: CycleFormValidationError): string 
       return 'Informe uma data de inicio valida.';
     case 'INVALID_END_DATE':
       return 'Informe uma data de fim valida.';
+    case 'START_IN_FUTURE':
+      return 'A data de inicio nao pode ser no futuro.';
     case 'END_BEFORE_START':
       return 'A data de fim deve ser igual ou posterior a data de inicio.';
     case 'OVERLAPS_EXISTING_CYCLE':

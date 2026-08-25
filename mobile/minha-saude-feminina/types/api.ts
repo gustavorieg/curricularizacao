@@ -23,7 +23,6 @@ export type ApiErrorBody = {
 export type ApiRequestOptions = Omit<RequestInit, 'body'> & {
   body?: unknown;
   auth?: boolean;
-  admin?: boolean;
 };
 
 export type AsyncResource<T> =

@@ -5,6 +5,7 @@ import { extractErrorMessage } from "../services/api-client";
 import type { User } from "../types";
 import { useAuth } from "../context/AuthContext";
 import { AlertIcon, EditIcon, PlusIcon, TrashIcon, UsersIcon } from "../components/icons";
+import { useToast } from "../context/ToastContext";
 
 const ROLE_LABELS: Record<User["role"], string> = {
   admin: "Administrador",
@@ -13,6 +14,7 @@ const ROLE_LABELS: Record<User["role"], string> = {
 
 export function UsersPage() {
   const { user: currentUser } = useAuth();
+  const { showToast } = useToast();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -43,8 +45,9 @@ export function UsersPage() {
     try {
       await userService.remove(user.id);
       setUsers((prev) => prev.filter((u) => u.id !== user.id));
+      showToast("Usuário removido com sucesso.");
     } catch (err) {
-      window.alert(extractErrorMessage(err));
+      showToast(extractErrorMessage(err), "error");
     } finally {
       setDeletingId(null);
     }
