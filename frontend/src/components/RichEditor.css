@@ -1,0 +1,50 @@
+.rich-editor .ql-toolbar .ql-formats button.ql-video-embed {
+  width: auto;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.rich-editor .ql-toolbar .ql-formats button.ql-video-embed::before {
+  content: "VIDEO";
+}
+
+.rich-editor .ql-toolbar {
+  border-color: var(--border-strong);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background: var(--surface-sunken);
+}
+
+.rich-editor .ql-container {
+  min-height: 260px;
+  font-size: 15px;
+  border-color: var(--border-strong);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  font-family: var(--font-sans);
+}
+
+.rich-editor .ql-editor {
+  min-height: 260px;
+}
+
+.rich-editor .ql-editor img {
+  max-width: 100%;
+  border-radius: 6px;
+}
+
+.rich-editor .ql-editor .ql-video-embed {
+  margin: 12px 0;
+}
+
+.rich-editor .ql-editor .ql-video-embed iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+}
+
+.rich-editor .ql-editor .ql-video-embed video {
+  max-width: 100%;
+  border-radius: 6px;
+}
