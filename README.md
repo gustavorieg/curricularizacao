@@ -1,4 +1,4 @@
-# Minha Saúde Feminina
+# Curricularizacão - Minha Saúde Feminina
 
 Três projetos que compartilham a mesma API: backend, painel administrativo web e app mobile.
 
