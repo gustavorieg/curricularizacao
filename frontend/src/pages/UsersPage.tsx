@@ -121,7 +121,7 @@ export function UsersPage() {
                       className="btn-link danger"
                       onClick={() => handleDelete(user)}
                       disabled={deletingId === user.id || users.length === 1}
-                      title={users.length === 1 ? "Não é possível remover o único usuário" : undefined}
+                      title={users.length === 1 ? "Não é possível remover o único usuário." : undefined}
                     >
                       <TrashIcon />
                       {deletingId === user.id ? "Deletando..." : "Deletar"}
